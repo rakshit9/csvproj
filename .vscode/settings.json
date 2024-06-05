@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/9d77224c-2131-4a8b-889f-de8b49b301d7/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/csvproject-001",
+    "appService.deploySubpath": "."
+}
