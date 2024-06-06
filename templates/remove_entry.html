@@ -1,0 +1,16 @@
+
+{% extends 'layout.html' %}
+
+{% block title %}My Flask App{% endblock %}
+
+{% block content %}
+    {% include 'header.html' %}
+    <div class="form-container">
+    <h5>Remove an Entry by Name</h5>
+    <form action="/remove_entry" method="post">
+        <label for="name">Enter the Name to Remove:</label>
+        <input type="text" id="name" name="name" required>
+        <input type="submit" value="Remove">
+    </form>
+    </div>
+{% endblock %}

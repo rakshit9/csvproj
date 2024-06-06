@@ -9,15 +9,20 @@ app.config['IMAGE_FOLDER'] = 'static'
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    return render_template('index.html')
+
+@app.route('/upload_csv', methods=['GET', 'POST'])
+def upload_csv():
     if request.method == 'POST':
         file = request.files['file']
         if file and file.filename.endswith('.csv'):
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], 'people.csv')
             file.save(filepath)
             return redirect(url_for('view_data'))
-    return render_template('index.html')
+    return render_template('upload_csv.html')
 
-@app.route('/search', methods=['GET', 'POST'])
+
+@app.route('/search_user', methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':
         name = request.form['name']
@@ -35,7 +40,8 @@ def search():
                             return render_template('display_image.html', image_url=image_url)
                     return render_template('error.html', message="Image file is missing.")
             return render_template('error.html', message="No such name found.")
-    return redirect(url_for('index'))
+    return render_template('search_user.html')
+    # return redirect(url_for('index'))
 
 @app.route('/data')
 def view_data():
@@ -74,30 +80,30 @@ def display_low_salary_images():
 
 
 
-@app.route('/add_picture', methods=['POST'])
+@app.route('/add_picture', methods=['GET','POST'])
 def add_picture():
-    name = request.form['name']
-    file = request.files['picture']
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['IMAGE_FOLDER'], filename))
-        
-        # Update the CSV file
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], 'people.csv')
-        temp_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'temp_people.csv')
-        with open(filepath, 'r', newline='') as csvfile, open(temp_file_path, 'w', newline='') as tempfile:
-            reader = csv.DictReader(csvfile)
-            fieldnames = reader.fieldnames
-            writer = csv.DictWriter(tempfile, fieldnames=fieldnames)
-            writer.writeheader()
-            for row in reader:
-                if row['Name'].lower() == name.lower():
-                    row['Picture'] = filename
-                writer.writerow(row)
-        
-        os.replace(temp_file_path, filepath)
-        return 'Image uploaded and CSV updated successfully!'
-    return 'Invalid file or file not provided'
+    if request.method == 'POST':
+        name = request.form['name']
+        file = request.files['picture']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['IMAGE_FOLDER'], filename))
+            # Update the CSV file
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], 'people.csv')
+            temp_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'temp_people.csv')
+            with open(filepath, 'r', newline='') as csvfile, open(temp_file_path, 'w', newline='') as tempfile:
+                reader = csv.DictReader(csvfile)
+                fieldnames = reader.fieldnames
+                writer = csv.DictWriter(tempfile, fieldnames=fieldnames)
+                writer.writeheader()
+                for row in reader:
+                    if row['Name'].lower() == name.lower():
+                        row['Picture'] = filename
+                    writer.writerow(row)
+            os.replace(temp_file_path, filepath)
+            return 'Image uploaded and CSV updated successfully!'
+        return 'Invalid file or file not provided'
+    return render_template('add_picture.html')
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg', 'gif'}
@@ -105,69 +111,71 @@ def allowed_file(filename):
 
 
 
-@app.route('/remove_entry', methods=['POST'])
+@app.route('/remove_entry', methods=['GET','POST'])
 def remove_entry():
-    name_to_remove = request.form['name'].strip().lower()  # Get name from form data and prepare it
-    filepath = os.path.join(app.config['UPLOAD_FOLDER'], 'people.csv')
-    temp_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'temp_people.csv')
-    try:
-        with open(filepath, 'r', newline='') as csvfile, open(temp_file_path, 'w', newline='') as tempfile:
-            reader = csv.DictReader(csvfile)
-            fieldnames = reader.fieldnames
-            writer = csv.DictWriter(tempfile, fieldnames=fieldnames)
-            writer.writeheader()
-            removed = False
-            for row in reader:
-                if row['Name'].lower() != name_to_remove:
-                    writer.writerow(row)
-                else:
-                    removed = True
+    if request.method == 'POST':
+        name_to_remove = request.form['name'].strip().lower()  # Get name from form data and prepare it
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], 'people.csv')
+        temp_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'temp_people.csv')
+        try:
+            with open(filepath, 'r', newline='') as csvfile, open(temp_file_path, 'w', newline='') as tempfile:
+                reader = csv.DictReader(csvfile)
+                fieldnames = reader.fieldnames
+                writer = csv.DictWriter(tempfile, fieldnames=fieldnames)
+                writer.writeheader()
+                removed = False
+                for row in reader:
+                    if row['Name'].lower() != name_to_remove:
+                        writer.writerow(row)
+                    else:
+                        removed = True
 
-        os.replace(temp_file_path, filepath)
-        return f'{name_to_remove.title()} removed successfully!' if removed else f'No entry found for {name_to_remove.title()}.'
-    except Exception as e:
-        return str(e), 500
+            os.replace(temp_file_path, filepath)
+            return f'{name_to_remove.title()} removed successfully!' if removed else f'No entry found for {name_to_remove.title()}.'
+        except Exception as e:
+            return str(e), 500
+    return render_template('remove_entry.html')
 
 
 
-@app.route('/update_entry', methods=['POST'])
+@app.route('/update_entry', methods=['GET','POST'])
 def update_entry():
-    name_to_update = request.form['name'].strip().lower()  # Name from the form
+    if request.method == 'POST':
+        name_to_update = request.form['name'].strip().lower()  # Name from the form
 
-    # Collect field updates from the form
-    updates = {
-        'State': request.form['state'].strip(),
-        'Salary': request.form['salary'].strip(),
-        'Grade': request.form['grade'].strip(),
-        'Room': request.form['room'].strip(),
-        'Telnum': request.form['telnum'].strip(),
-        'Picture': request.form['picture'].strip(),
-        'Keywords': request.form['keywords'].strip()
-    }
+        # Collect field updates from the form
+        updates = {
+            'State': request.form['state'].strip(),
+            'Salary': request.form['salary'].strip(),
+            'Grade': request.form['grade'].strip(),
+            'Room': request.form['room'].strip(),
+            'Telnum': request.form['telnum'].strip(),
+            'Picture': request.form['picture'].strip(),
+            'Keywords': request.form['keywords'].strip()
+        }
 
-    filepath = os.path.join(app.config['UPLOAD_FOLDER'], 'people.csv')
-    temp_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'temp_people.csv')
-    updated = False
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], 'people.csv')
+        temp_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'temp_people.csv')
+        updated = False
 
-    try:
-        with open(filepath, 'r', newline='') as csvfile, open(temp_file_path, 'w', newline='') as tempfile:
-            reader = csv.DictReader(csvfile)
-            fieldnames = reader.fieldnames
-            writer = csv.DictWriter(tempfile, fieldnames=fieldnames)
-            writer.writeheader()
-            for row in reader:
-                if row['Name'].strip().lower() == name_to_update:
-                    for field, value in updates.items():
-                        if value:  # Only update fields that have a new value provided
-                            row[field] = value
-                    updated = True
-                writer.writerow(row)
+        try:
+            with open(filepath, 'r', newline='') as csvfile, open(temp_file_path, 'w', newline='') as tempfile:
+                reader = csv.DictReader(csvfile)
+                fieldnames = reader.fieldnames
+                writer = csv.DictWriter(tempfile, fieldnames=fieldnames)
+                writer.writeheader()
+                for row in reader:
+                    if row['Name'].strip().lower() == name_to_update:
+                        for field, value in updates.items():
+                            if value:  # Only update fields that have a new value provided
+                                row[field] = value
+                        updated = True
+                    writer.writerow(row)
 
-        os.replace(temp_file_path, filepath)
-        return f'Entry updated successfully for {name_to_update.title()}!' if updated else f'No entry found for {name_to_update.title()}.'
-    except Exception as e:
-        return str(e), 500
-
-
+            os.replace(temp_file_path, filepath)
+            return f'Entry updated successfully for {name_to_update.title()}!' if updated else f'No entry found for {name_to_update.title()}.'
+        except Exception as e:
+            return str(e), 500
+    return render_template('update_entry.html')
 if __name__ == '__main__':
     app.run(debug=True)

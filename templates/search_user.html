@@ -1,0 +1,18 @@
+
+
+{% extends 'layout.html' %}
+
+{% block title %}My Flask App{% endblock %}
+
+{% block content %}
+{% include 'header.html' %}
+
+<div class="form-container">
+
+<h5>Search for a Person image</h5>
+    <form method="post" action="/search_user">
+        <input type="text" name="name" placeholder="Enter name to search">
+        <input type="submit" value="Search">
+    </form>
+ </div>
+{% endblock %}

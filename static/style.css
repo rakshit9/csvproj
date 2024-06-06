@@ -1,20 +1,87 @@
-.table {
-    width: 100%;
-    border-collapse: collapse;
+/* Optional: additional custom styles */
+a {
+    color: #00695c; /* Deep teal color for links */
+    font-weight: bold; /* Make the font bold for better visibility */
 }
 
-.table th, .table td {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: left;
+.form-container {
+    width: 30%; /* Adjusted width for better screen utilization */
+    margin: 20px auto; /* Center the container with some margin at the top */
+
+    background: #ffffff; /* White background for a clean look */
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* More subtle shadow */
+    border-radius: 10px; /* Softened rounded corners */
 }
 
-.error {
-    color: red;
-    font-weight: bold;
+.form-group {
+    margin-bottom: 10px; /* Reduced space between form groups */
 }
 
-img {
-    width: 100px;
-    height: 100px;
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 14px; /* Smaller font size for labels */
+}
+
+input[type="text"],
+input[type="submit"] {
+    width: 50%;
+    padding: 10px; /* Uniform padding for better touch interaction */
+    border-radius: 5px; /* Rounded borders for inputs */
+    border: 1px solid #ccc;
+    margin-top: 20px;
+    font-size: 16px; /* Larger font size for easier reading */
+}
+
+input[type="submit"] {
+    background-color: #007BFF; /* Brighter blue for better visibility */
+    color: white;
+    font-weight: bold; /* Bold text on the button */
+    border: none; /* Remove border for a smoother look */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for 3D effect */
+    transition: background-color 0.2s, transform 0.2s; /* Smooth transitions for interactions */
+}
+
+input[type="submit"]:hover {
+    background-color: #0056c0; /* Slightly darker on hover */
+    transform: scale(1.05); /* Slight increase in scale on hover */
+}
+
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+    .form-container {
+        width: 30%; /* Takes up more space on smaller screens for readability */
+    }
+}
+
+
+table {
+    width: 70%; /* Set table width to 70% of its container */
+    margin: 20px auto; /* Center the table horizontally and add vertical spacing */
+    border-collapse: collapse; /* Ensures borders between cells are merged */
+}
+
+th, td {
+    padding: 15px; /* Ample padding for readability */
+    text-align: left; /* Align text to the left within cells */
+    border-bottom: 1px solid #ddd; /* Subtle border for visual separation */
+}
+
+th {
+    background-color: #004d40; /* Deep teal for header background */
+    color: white; /* White text for contrast */
+}
+
+tbody tr:hover {
+    background-color: #f5f5f5; /* Light grey for hover effect, enhancing interactivity */
+}
+
+
+.image-container {
+    display: flex;
+    justify-content: center; /* Centers horizontally in the container */
+    align-items: center; /* Centers vertically in the container */
+    height: 100vh; /* Optional: full height of the viewport */
 }

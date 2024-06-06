@@ -1,0 +1,20 @@
+
+
+{% extends 'layout.html' %}
+
+{% block title %}My Flask App{% endblock %}
+
+{% block content %}
+    {% include 'header.html' %}
+    <div class="form-container">
+
+    <h5>Add a Picture for an Entry</h5>
+    <form action="/add_picture" method="post" enctype="multipart/form-data">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"required>
+        <label for="picture">Upload Picture:</label>
+        <input type="file" id="picture" name="picture" accept="image/*">
+        <input type="submit" value="Upload Image">
+    </form>
+    </div>
+{% endblock %}

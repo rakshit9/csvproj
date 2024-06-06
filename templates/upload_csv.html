@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home Page - My Flask App{% endblock %}
+
+{% block content %}
+{% include 'header.html' %}
+
+<div class="form-container">
+
+    <h5>Upload a CSV File</h5>
+    <form action="/upload_csv" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".csv">
+        <input type="submit" value="Upload">
+    </form>
+    </div>
+{% endblock %}

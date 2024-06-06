@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Error</title>
-</head>
-<body>
+{% extends 'layout.html' %}
+
+{% block title %}My Flask App{% endblock %}
+
+{% block content %}
+    {% include 'header.html' %}
     <h1>Error</h1>
     <p>{{ message }}</p>
-</body>
-</html>
+{% endblock %}

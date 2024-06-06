@@ -2,7 +2,7 @@ Name,State,Salary,Grade,Room,Telnum,Picture,Keywords
 Dhruvi,TX,99099,100,550,1000010,dhru.jpg,Dhruvi is nice
 Chuck,TX,1000,98,420,,chuck.jpg,Chuck is amazing
 Meena,TX,125000,99,,, ,Meena is outa here
-Dave,TX,500,A,12,12,dave.jpg,asd
+Dave,NN,20,40,525,0,dave.jpg,Who is this
 Tuan,CA,,80,-1,, ,Tuan is gone
 Tavo,CA,220200, ,,,tavo.jpg,Tavo works very hard
 Nora,TX,-1,80,520,808, ,
