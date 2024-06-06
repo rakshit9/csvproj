@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload CSV</title>
+</head>
+<body>
+    <h1>Upload a CSV File</h1>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".csv">
+        <input type="submit" value="Upload">
+    </form>
+
+
+    <h1>Search for a Person</h1>
+    <form method="post" action="/search">
+        <input type="text" name="name" placeholder="Enter name to search">
+        <input type="submit" value="Search">
+    </form>
+
+
+    <h2>Add a Picture for an Entry</h2>
+<form action="/add_picture" method="post" enctype="multipart/form-data">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name"required>
+    <label for="picture">Upload Picture:</label>
+    <input type="file" id="picture" name="picture" accept="image/*">
+    <input type="submit" value="Upload Image">
+</form>
+
+
+
+<h2>Remove an Entry by Name</h2>
+<form action="/remove_entry" method="post">
+    <label for="name">Enter the Name to Remove:</label>
+    <input type="text" id="name" name="name" required>
+    <input type="submit" value="Remove">
+</form>
+
+
+
+
+<h2>Update Multiple Fields for an Entry</h2>
+<form action="/update_entry" method="post">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="state">State:</label>
+    <input type="text" id="state" name="state">
+
+    <label for="salary">Salary:</label>
+    <input type="text" id="salary" name="salary">
+
+    <label for="grade">Grade:</label>
+    <input type="text" id="grade" name="grade">
+
+    <label for="room">Room:</label>
+    <input type="text" id="room" name="room">
+
+    <label for="telnum">Telnum:</label>
+    <input type="text" id="telnum" name="telnum">
+
+    <label for="picture">Picture:</label>
+    <input type="text" id="picture" name="picture">
+
+    <label for="keywords">Keywords:</label>
+    <input type="text" id="keywords" name="keywords">
+    
+    <input type="submit" value="Update Entry">
+</form>
+
+
+</body>
+</html>
